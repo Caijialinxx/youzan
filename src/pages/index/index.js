@@ -1,15 +1,45 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
-import router from './router'
+import axios from 'axios'
+import url from 'js/api.js'
+import 'css/common.css'
+import './index.css'
 
-Vue.config.productionTip = false
+import { InfiniteScroll } from 'mint-ui'
+Vue.use(InfiniteScroll)
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+  data: {
+    list: null,
+    pageNum: 1,
+    pageSize: 8,
+    loading: false,
+    allLoaded: false,
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      if (this.allLoaded) return
+      this.loading = true
+      axios.post(url.hotList, {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      }).then(res => {
+        let currentList = res.data.list
+        if (currentList.length < this.pageSize) {
+          // 判断所有数据是否已加载完成
+          this.allLoaded = true
+        }
+        if (this.list) {
+          this.list = this.list.concat(currentList)
+        } else {
+          this.list = currentList     // 首次请求数据
+        }
+        this.loading = false
+        this.pageNum++
+      })
+    }
+  },
 })
