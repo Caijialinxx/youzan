@@ -4,11 +4,14 @@ import url from 'js/api.js'
 import 'css/common.css'
 import './index.css'
 
+import FooterNav from 'components/FooterNav.vue'
+
 import { InfiniteScroll } from 'mint-ui'
 Vue.use(InfiniteScroll)
 
 new Vue({
   el: '#app',
+  components: { FooterNav },
   data: {
     list: null,
     pageNum: 1,
