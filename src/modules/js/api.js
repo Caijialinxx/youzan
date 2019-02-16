@@ -1,5 +1,6 @@
 let url = {
-  hotList: '/index/hotList'
+  hotList: '/index/hotList',
+  indexSwiper: '/index/swiper',
 }
 
 // let host = ''

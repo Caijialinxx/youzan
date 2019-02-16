@@ -5,22 +5,29 @@ import 'css/common.css'
 import './index.css'
 
 import FooterNav from 'components/FooterNav.vue'
+import IndexSwiper from 'components/Swiper.vue'
 
 import { InfiniteScroll } from 'mint-ui'
 Vue.use(InfiniteScroll)
 
 new Vue({
   el: '#app',
-  components: { FooterNav },
+  components: { FooterNav, IndexSwiper },
   data: {
     list: null,
     pageNum: 1,
     pageSize: 8,
     loading: false,
     allLoaded: false,
+    slidesList: null,
+    swiperHeight: 0,
   },
   created() {
+    this.getSlidesList()
     this.getList()
+  },
+  mounted() {
+    this.swiperHeight = window.innerWidth / 375 * 200
   },
   methods: {
     getList() {
@@ -43,6 +50,11 @@ new Vue({
         this.loading = false
         this.pageNum++
       })
-    }
+    },
+    getSlidesList() {
+      axios.get(url.indexSwiper).then(res => {
+        this.slidesList = res.data.list
+      })
+    },
   },
 })
